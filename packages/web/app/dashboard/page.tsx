@@ -27,7 +27,7 @@ function DashboardPage() {
   return (
     <div className="px-4 py-6 sm:px-0">
       <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 p-4">
-        <h2 className="text-xl font-semibold">Welcome, {user.full_name || user.email}!</h2>
+        <h2 className="text-xl font-semibold">Welcome, {user.full_name || user.sub}!</h2>
         <p className="mt-2">This is your dashboard. More widgets and information will be available here soon.</p>
         
         {user.roles?.includes('administrator') && (
