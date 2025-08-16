@@ -128,3 +128,30 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
         data={"sub": user.email, "roles": roles}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+# Temporary endpoint to assign admin role.
+# In a real production environment, this should be handled by a secure CLI or admin interface.
+@app.get("/api/v1/promote-to-admin")
+def promote_to_admin(email: str, secret: str, db: Session = Depends(get_db)):
+    # IMPORTANT: This is a temporary and insecure method for initial setup.
+    # The 'secret' should be a very complex, hard-to-guess string.
+    # In a real app, you would replace this with a proper admin tool.
+    if secret != "your_very_secret_promotion_key_12345": # Replace with a real secret
+        raise HTTPException(status_code=403, detail="Invalid secret key.")
+
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    admin_role = db.query(models.Role).filter(models.Role.name == "administrator").first()
+    if not admin_role:
+        # This should not happen if the DB is seeded correctly.
+        raise HTTPException(status_code=500, detail="Administrator role not found.")
+
+    if admin_role in user.roles:
+        return {"message": f"User {email} is already an administrator."}
+
+    user.roles.append(admin_role)
+    db.commit()
+    
+    return {"message": f"User {email} has been promoted to administrator."}
