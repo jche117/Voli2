@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAssets, deleteAsset } from '@/lib/api';
+import { getAssets, deleteAsset, createAsset, updateAsset } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import AssetForm from './AssetForm';
 
@@ -58,9 +58,21 @@ export default function AssetsTable() {
     setSelectedAsset(null);
   };
 
-  const handleAssetSaved = () => {
-    fetchAssets(); // Refresh data after create/update
-    handleCloseModal();
+  const handleSaveAsset = async (assetData: any) => {
+    if (token) {
+      try {
+        if (selectedAsset) {
+          await updateAsset(selectedAsset.id, assetData, token);
+        } else {
+          await createAsset(assetData, token);
+        }
+        fetchAssets();
+        handleCloseModal();
+      } catch (err) {
+        setError('Failed to save asset.');
+        console.error(err);
+      }
+    }
   };
 
   const handleDelete = async (assetId: number) => {
@@ -139,8 +151,8 @@ export default function AssetsTable() {
       {isModalOpen && (
         <AssetForm
           asset={selectedAsset}
-          onClose={handleCloseModal}
-          onAssetSaved={handleAssetSaved}
+          onSave={handleSaveAsset}
+          onCancel={handleCloseModal}
         />
       )}
     </div>
