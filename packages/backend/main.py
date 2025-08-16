@@ -45,7 +45,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 origins = [
-    "http://localhost:3000", # Frontend URL
+    "http://localhost:3000",  # For local development
+    # This allows Vercel preview and production domains. For higher security,
+    # you can restrict this to your specific production URL after deployment.
+    "https://*.vercel.app",
 ]
 
 app.add_middleware(
