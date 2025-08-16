@@ -22,6 +22,15 @@ export const getRoles = async (token: string) => {
   return response.data;
 };
 
+export const createRole = async (roleData: { name: string; description: string }, token: string) => {
+  const response = await api.post('/roles/', roleData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 // Role assignment endpoints (backend expects path params user_id & role_id)
 export const assignRoleToUser = async (userId: number, roleId: number, token: string) => {
   const response = await api.post(`/roles/users/${userId}/assign/${roleId}`, null, {

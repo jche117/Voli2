@@ -18,11 +18,11 @@ interface Asset {
 // Props for the form component
 interface AssetFormProps {
   asset: Asset | null; // Asset to edit, or null for creating
-  onClose: () => void;
-  onAssetSaved: () => void;
+  onSave: (assetData: Omit<Asset, 'id'>) => void;
+  onCancel: () => void;
 }
 
-const AssetForm = ({ asset, onClose, onAssetSaved }: AssetFormProps) => {
+const AssetForm = ({ asset, onSave, onCancel }: AssetFormProps) => {
   const { token } = useAuth();
   const [formData, setFormData] = useState<Omit<Asset, 'id'> & { id?: number }> ({
     name: '',
@@ -74,7 +74,7 @@ const AssetForm = ({ asset, onClose, onAssetSaved }: AssetFormProps) => {
         // Create new asset
         await createAsset(formData, token);
       }
-      onAssetSaved();
+      onSave(formData);
     } catch (err: any) {
       console.error('Failed to save asset:', err);
       setError(err.response?.data?.detail || 'An error occurred while saving.');
@@ -152,7 +152,7 @@ const AssetForm = ({ asset, onClose, onAssetSaved }: AssetFormProps) => {
             </select>
           </div>
           <div className="flex justify-end space-x-4">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition duration-300">
+            <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition duration-300">
               Cancel
             </button>
             <button 
