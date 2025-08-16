@@ -46,9 +46,7 @@ app = FastAPI(lifespan=lifespan)
 
 origins = [
     "http://localhost:3000",  # For local development
-    # This allows Vercel preview and production domains. For higher security,
-    # you can restrict this to your specific production URL after deployment.
-    "https://*.vercel.app",
+    "https://voli2-web.vercel.app", # Your deployed frontend
 ]
 
 app.add_middleware(
