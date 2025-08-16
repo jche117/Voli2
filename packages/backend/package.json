@@ -1,0 +1,10 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "poetry run uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
+  }
+}

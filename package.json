@@ -1,0 +1,14 @@
+{
+  "name": "voli",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:backend": "pnpm --filter backend dev",
+    "dev": "concurrently \"pnpm dev:web\" \"pnpm dev:backend\""
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "concurrently": "^9.2.0",
+    "typescript": "^5"
+  }
+}
